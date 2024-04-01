@@ -30,19 +30,35 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('제주도 코스 추천'),
-        ),
-
-        body: TextButton(
-            onPressed: (){
-              Navigator.push(
+        body: GestureDetector(
+          child: Container(
+              alignment: Alignment.topCenter,
+              width: double.infinity,
+              height: double.infinity,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/background.jpeg'),
+                    fit: BoxFit.fill
+                ),
+              ),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 65),
+                      child: Text("제주 여행", style : TextStyle(fontSize: 65, fontFamily: 'EF_jejudoldam')),
+                    ),
+                    Text("화면을 터치하세요", style: TextStyle(fontSize: 15, color: Colors.white),)
+                  ]
+              )
+          ),
+          onTap: () {
+            Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => selectpage.selectpage())
-          );
-        },
-            child: Text('검색하기')),
-
+            );
+          },
+        )
     );
   }
 }

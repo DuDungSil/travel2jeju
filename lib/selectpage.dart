@@ -25,9 +25,16 @@ class _selectpageState extends State<selectpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(automaticallyImplyLeading: false),
 
-      body: [typepage(),periodnumpage(),kewordpage()][index],
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/background.jpeg'),
+              fit: BoxFit.fill
+          ),
+        ),
+        child: [typepage(),periodnumpage(),kewordpage()][index],
+      ),
 
       bottomNavigationBar: BottomAppBar(
           child: Row(
@@ -71,7 +78,7 @@ class typepage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Container(
       child: Column(
         verticalDirection: VerticalDirection.down,
         children: [
