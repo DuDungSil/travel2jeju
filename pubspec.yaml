@@ -79,7 +79,7 @@ flutter:
   fonts:
     - family: EF_jejudoldam
       fonts:
-        - asset: assets/fonts/EF_jejudoldam-light.ttf
+        - asset: assets/fonts/EF_jejudoldam.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

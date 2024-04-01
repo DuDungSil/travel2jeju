@@ -27,12 +27,6 @@ class _selectpageState extends State<selectpage> {
     return Scaffold(
 
       body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/background.jpeg'),
-              fit: BoxFit.fill
-          ),
-        ),
         child: [typepage(),periodnumpage(),kewordpage()][index],
       ),
 
