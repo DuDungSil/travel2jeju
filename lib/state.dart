@@ -55,9 +55,11 @@ class Store extends ChangeNotifier {
     // db 업데이트가 있다면
     if (true) {
       // http get요청
-      var url2 = Uri.parse('http://121.134.59.78:3573/keyword');
+      print("요청");
+      var url2 = Uri.parse('http://15.165.203.216:3573/keyword');
       try {
         var response = await http.get(url2);
+        print(response);
         var data = utf8.decode(response.bodyBytes);
         var _data = data.split(',');
         selectable_kewords = _data;
@@ -76,9 +78,11 @@ class Store extends ChangeNotifier {
   getResult() async {
     if (true) {
       // http get요청
-      var url1 = Uri.parse('http://121.134.59.78:3573/spot/친구,천천히 걷기,힐링');
+      print("요청");
+      var url1 = Uri.parse('http://15.165.203.216:3573/spot/친구?4?천천히 걷기,힐링');
       try {
         var response = await http.get(url1);
+        print(response);
         var data = utf8.decode(response.bodyBytes);
         print(response.contentLength);
         log(data);
