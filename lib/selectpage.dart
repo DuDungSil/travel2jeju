@@ -27,6 +27,7 @@ class _selectpageState extends State<selectpage> {
     return Scaffold(
 
       body: Container(
+        padding: EdgeInsets.only(top: 100),
         child: [typepage(),periodnumpage(),kewordpage()][index],
       ),
 
@@ -76,42 +77,43 @@ class typepage extends StatelessWidget {
       child: Column(
         verticalDirection: VerticalDirection.down,
         children: [
-          Text('동반자 유형을 선택하세요', style: TextStyle(
-              fontSize: 20
+          Text('누구와?', style: TextStyle(
+            fontSize: 50,
+            fontFamily: 'EF_jejudoldam',
             ),
           ),
           Container(
             alignment: Alignment.center,
-            margin: EdgeInsets.all(1),
-            padding: EdgeInsets.all(8),
+            margin: EdgeInsets.only(top: 50),
+            padding: EdgeInsets.all(5),
             width: 200,
-            child: Text('${context.watch<state.Store>().co_type}'),
+            child: Text('${context.watch<state.Store>().co_type}', style: TextStyle(fontSize: 35, fontFamily: 'EF_jejudoldam',),),
           ),
           Container(
-              height: 1,
-              width: 200,
+              height: 3,
+              width: 100,
               alignment: Alignment.center,
               decoration: BoxDecoration(
                   border: Border(
-                      bottom: BorderSide(color: Colors.purple, width: 1))
+                      bottom: BorderSide(color: Colors.purple, width: 3))
               )
           ),
           Container(height: 40),
           TextButton(onPressed: (){
             context.read<state.Store>().changeCo_type('친구');
-          }, child: Text('친구')),
+          }, child: Text('친구', style: TextStyle(color: Colors.deepPurple, fontSize: 25, fontFamily: 'EF_jejudoldam',),)),
           TextButton(onPressed: (){
             context.read<state.Store>().changeCo_type('부모');
-          }, child: Text('부모')),
+          }, child: Text('부모', style: TextStyle(color: Colors.deepPurple, fontSize: 25, fontFamily: 'EF_jejudoldam',),)),
           TextButton(onPressed: (){
             context.read<state.Store>().changeCo_type('아이');
-          }, child: Text('아이')),
+          }, child: Text('아이', style: TextStyle(color: Colors.deepPurple, fontSize: 25, fontFamily: 'EF_jejudoldam',),)),
           TextButton(onPressed: (){
             context.read<state.Store>().changeCo_type('커플');
-          }, child: Text('커플')),
+          }, child: Text('커플', style: TextStyle(color: Colors.deepPurple, fontSize: 25, fontFamily: 'EF_jejudoldam',),)),
           TextButton(onPressed: (){
             context.read<state.Store>().changeCo_type('혼자');
-          }, child: Text('혼자')),
+          }, child: Text('혼자', style: TextStyle(color: Colors.deepPurple, fontSize: 25, fontFamily: 'EF_jejudoldam',),)),
         ],
       ),
     );
@@ -127,48 +129,38 @@ class periodnumpage extends StatelessWidget {
       child: Column(
         verticalDirection: VerticalDirection.down,
         children: [
-          Text('몇일', style: TextStyle(
-              fontSize: 20
+          Text('몇 일?', style: TextStyle(
+            fontSize: 50,
+            fontFamily: 'EF_jejudoldam',
           ),
           ),
           Container(
             alignment: Alignment.center,
-            margin: EdgeInsets.all(1),
-            padding: EdgeInsets.all(8),
+            margin: EdgeInsets.only(top: 50),
+            padding: EdgeInsets.all(5),
             width: 200,
-            child: Text('${context.watch<state.Store>().travel_period}'),
+            child: Text('${context.watch<state.Store>().travel_period}', style: TextStyle(fontSize: 35, fontFamily: 'EF_jejudoldam',),),
           ),
           Container(
-              height: 1,
-              width: 200,
+              height: 3,
+              width: 100,
+              margin: EdgeInsets.only(bottom: 50),
               alignment: Alignment.center,
               decoration: BoxDecoration(
                   border: Border(
-                      bottom: BorderSide(color: Colors.purple, width: 1))
+                      bottom: BorderSide(color: Colors.purple, width: 3))
               )
           ),
-          Container(height: 150),
           NumberPicker(
-              axis: Axis.horizontal,
-              step: 1,
-              minValue: 0,
-              maxValue: 15,
-              value: context.watch<state.Store>().travel_period,
-              onChanged: (value) => context.read<state.Store>().changetravel_period(value)
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-                IconButton(onPressed: (){
-                  final newValue = context.read<state.Store>().travel_period - 1;
-                  context.read<state.Store>().changetravel_period(newValue);
-                }, icon: Icon(Icons.remove)),
-                Container(width: 40,),
-                IconButton(onPressed: (){
-                  final newValue = context.read<state.Store>().travel_period + 1;
-                  context.read<state.Store>().changetravel_period(newValue);
-                }, icon: Icon(Icons.add))
-            ],
+            axis: Axis.vertical,
+            step: 1,
+            minValue: 0,
+            maxValue: 30,
+            itemCount: 5,
+            value: context.watch<state.Store>().travel_period,
+            onChanged: (value) => context.read<state.Store>().changetravel_period(value),
+            textStyle: TextStyle(fontSize: 20, fontFamily: 'EF_jejudoldam',),
+            selectedTextStyle: TextStyle(fontSize: 30, fontFamily: 'EF_jejudoldam', color: Colors.deepPurple, ),
           ),
         ],
       ),
@@ -222,7 +214,7 @@ class _kewordpageState extends State<kewordpage> {
             width: 500,
             height: 400,
             child: ListView.builder(
-                itemCount: 10,
+                itemCount: 8,
                 itemBuilder: (context, index){
                   return Container(
                     alignment: Alignment.center,
@@ -230,7 +222,7 @@ class _kewordpageState extends State<kewordpage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         _buildChip(context, index),
-                        _buildChip(context, index + 10),
+                        _buildChip(context, index + 8),
                       ],
                     ),
                   );
