@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -181,56 +183,39 @@ class _kewordpageState extends State<kewordpage> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        verticalDirection: VerticalDirection.down,
-        children: [
-          Text('키워드를 선택하세요', style: TextStyle(
-              fontSize: 20
-          ),
-          ),
-          Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.all(1),
-            padding: EdgeInsets.all(8),
-            width: 340,
-            height: context.watch<state.Store>().keword_list.length <= 3 ? 35 : 60,
-            child: context.watch<state.Store>().keword_list.isNotEmpty
-                ? Container(alignment: Alignment.center, height: 50,child: MyListview(dataList: context.watch<state.Store>().keword_list))
-                : Text(''),
-          ),
-          Container(
-              height: 1,
-              width: 200,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(color: Colors.purple, width: 1))
-              )
-          ),
-          Container(height: 40),
-          Container(
-            alignment: Alignment.center,
-            width: 500,
-            height: 400,
-            child: ListView.builder(
-                itemCount: 8,
-                itemBuilder: (context, index){
-                  return Container(
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _buildChip(context, index),
-                        _buildChip(context, index + 8),
-                      ],
-                    ),
-                  );
-                }
-              )
+    return Column(
+      children: [
+        Container(
+          height: 60,
+          child: Text('테마는?',
+            style: TextStyle(
+              fontSize: 50,
+              fontFamily: 'EF_jejudoldam',
             ),
-        ],
-      ),
+          ),
+        ),
+        Container(
+          height: 550,
+          child: GridView.builder(
+            itemCount: context.read<state.Store>().selectable_kewords.length - 1,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 3/1,
+            ),
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                margin: EdgeInsets.all(5),
+                color: Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(0.2),
+                alignment: Alignment.center,
+                child: Text(
+                  context.read<state.Store>().selectable_kewords[index],
+                  style: TextStyle(fontSize: 20, fontFamily: 'EF_jejudoldam',),
+                ),
+              );
+            },
+          ),
+        )
+      ],
     );
   }
 }
@@ -268,31 +253,4 @@ class MyListview extends StatelessWidget {
     );
   }
 }
-
-
-
-
-Widget _buildChip(BuildContext context, int index) {
-  var label = context.read<state.Store>().selectable_kewords[index];
-  var isSelected = context.read<state.Store>().containsAnyKeyword(label);
-
-  return Center(
-    child: RawChip(
-      label: Text(label),
-      avatar: Icon(Icons.circle),
-      visualDensity: const VisualDensity(vertical: -4, horizontal: -4),
-      checkmarkColor: Colors.amber,
-      selected: isSelected,
-      onPressed: () {
-        if(isSelected){
-          context.read<state.Store>().remove_keword(label);
-        }
-        else{
-          context.read<state.Store>().add_keword(label);
-        }
-      },
-    ),
-  );
-}
-
 
