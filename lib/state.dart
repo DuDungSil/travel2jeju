@@ -1,8 +1,9 @@
+import 'dart:math';
 import 'dart:convert';
-import 'dart:developer';
+import 'dart:developer' as dev;
 
+import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class Store extends ChangeNotifier {
@@ -12,6 +13,8 @@ class Store extends ChangeNotifier {
   List<String> keword_list = [];
 
   List<String> selectable_kewords = [];
+  List<Color> selectable_kewords_colors = [];
+
   var result = [];
 
   changeCo_type(String type) {
@@ -24,72 +27,72 @@ class Store extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool containsAnyKeyword(String word) {
-    if (keword_list.contains(word))
+  bool containsAnyKeyword(int index) {
+    if (keword_list.contains(selectable_kewords[index]))
       return true;
     return false;
   }
 
-  add_keword(String word) {
-    keword_list.add(word);
+  add_keword(int index) {
+    keword_list.add(selectable_kewords[index]);
     notifyListeners();
   }
 
-  remove_keword(String word) {
-    keword_list.remove(word);
+  remove_keword(int index) {
+    keword_list.remove(selectable_kewords[index]);
     notifyListeners();
   }
 
   getSelectable_kewords() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    // // http get요청
-    // var url = Uri.parse('주소');
-    // try{
-    //   var response = await http.get(url);
-    //   var date = jsonDecode(response.body);
-    // } catch(e){
-    //   print('통신 오류');
-    // }
-
-    // db 업데이트가 있다면
-    if (true) {
-      // http get요청
-      print("요청");
-      var url2 = Uri.parse('http://15.165.203.216:3573/keyword');
+      var url = Uri.parse('http://15.165.203.216:3573/keyword');
       try {
-        var response = await http.get(url2);
-        print(response);
+        var response = await http.get(url);
         var data = utf8.decode(response.bodyBytes);
         var _data = data.split(',');
         selectable_kewords = _data;
-        notifyListeners();
       } catch (e, stackTrace) {
         print('Caught error: $e');
         print('Stack trace: $stackTrace');
       }
-      // db에서 가져온후 shared preference에 저장 ( 업데이트 일자 함께 저장 )
-
-    }
-    // shared preference 에서 가져오기
+      generateColors(selectable_kewords.length);
   }
 
+  generateColors(int length)
+  {
+    for(int i = 0; i < length; i++)
+    {
+      selectable_kewords_colors.add(Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(0.2));
+    }
+  }
+
+  bool validateRequiredParameters()
+  {
+    if(co_type == '')
+    {
+      return false;
+    }
+    if(travel_period == 0)
+    {
+      return false;
+    }
+    if(keword_list.isEmpty)
+    {
+      return false;
+    }
+    return true;
+  }
 
   getResult() async {
-    if (true) {
-      // http get요청
-      print("요청");
-      var url1 = Uri.parse('http://15.165.203.216:3573/spot/친구?4?천천히 걷기,힐링');
-      try {
-        var response = await http.get(url1);
-        print(response);
-        var data = utf8.decode(response.bodyBytes);
-        print(response.contentLength);
-        log(data);
-      } catch (e, stackTrace) {
-        print('Caught error: $e');
-        print('Stack trace: $stackTrace');
-      }
+    String param = co_type + '?' + travel_period.toString() + '?' + keword_list.join(',');
+    var url = Uri.parse('http://15.165.203.216:3573/spot/' + param);
+    try {
+      var response = await http.get(url);
+      var data = utf8.decode(response.bodyBytes);
+      dev.log(data);
+    } catch (e, stackTrace) {
+      print('Caught error: $e');
+      print('Stack trace: $stackTrace');
     }
   }
+
 }

@@ -29,11 +29,12 @@ class _selectpageState extends State<selectpage> {
     return Scaffold(
 
       body: Container(
-        padding: EdgeInsets.only(top: 100),
+        padding: EdgeInsets.only(top: 50),
         child: [typepage(),periodnumpage(),kewordpage()][index],
       ),
 
       bottomNavigationBar: BottomAppBar(
+        height: 60,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -55,10 +56,51 @@ class _selectpageState extends State<selectpage> {
                 )
               : TextButton(
                   onPressed: (){
-                    setState(() {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => resultpage.resultpage()));
-                    });
-                  }, child: Text('검색'))
+                    if(context.read<state.Store>().validateRequiredParameters())
+                      {
+                        setState(() {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => resultpage.resultpage()));
+                        });
+                      }
+                    else
+                    {
+                      showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext ctx){
+                            return AlertDialog(
+                              backgroundColor: Colors.white,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0),
+                              ),
+                              alignment: Alignment.center,
+                              content: Container(
+                                  alignment: Alignment.center,
+                                  height: 24,
+                                  child: Text('모든 항목을 선택하세요',style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20))
+                              ),
+                              actions: [
+                                Center(
+                                  child: TextButton(
+                                    child: Text('확인',style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),),
+                                    onPressed: (){
+                                      Navigator.of(context).pop();
+                                    }
+                                  )
+                                )
+                              ],
+                            );
+                          }
+                      );
+                    }
+                  }, child: Text('검색',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black
+                  ),
+                )
+              )
             ],
           ),
       )
@@ -195,21 +237,47 @@ class _kewordpageState extends State<kewordpage> {
           ),
         ),
         Container(
-          height: 550,
+          child: Text('(최대 4개 선택가능)',
+            style: TextStyle(fontSize: 16, fontFamily: 'EF_jejudoldam',),
+          ),
+        ),
+        Expanded(
           child: GridView.builder(
+          shrinkWrap: true,
             itemCount: context.read<state.Store>().selectable_kewords.length - 1,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               childAspectRatio: 3/1,
             ),
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                margin: EdgeInsets.all(5),
-                color: Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(0.2),
-                alignment: Alignment.center,
-                child: Text(
-                  context.read<state.Store>().selectable_kewords[index],
-                  style: TextStyle(fontSize: 20, fontFamily: 'EF_jejudoldam',),
+              return InkWell(
+                onTap: (){
+                  if(context.read<state.Store>().containsAnyKeyword(index))
+                  {
+                    setState(() {
+                      context.read<state.Store>().remove_keword(index);
+                    });
+                  }
+                  else
+                  {
+                    if(context.read<state.Store>().keword_list.length < 4)
+                    {
+                      setState(() {
+                        context.read<state.Store>().add_keword(index);
+                      });
+                    }
+                  }
+                },
+                child: Container(
+                  margin: EdgeInsets.all(5),
+                  color: context.read<state.Store>().selectable_kewords_colors[index],
+                  alignment: Alignment.center,
+                  child: Text(
+                    context.read<state.Store>().selectable_kewords[index],
+                    style: (!context.read<state.Store>().containsAnyKeyword(index))
+                        ? TextStyle(fontSize: 20, fontFamily: 'EF_jejudoldam',)
+                        : TextStyle(fontSize: 20,color: Colors.white ,fontFamily: 'EF_jejudoldam',),
+                  ),
                 ),
               );
             },
@@ -219,38 +287,3 @@ class _kewordpageState extends State<kewordpage> {
     );
   }
 }
-
-class MyListview extends StatelessWidget {
-  MyListview({super.key, this.dataList});
-
-  final dataList;
-  final int elementsPerRow = 3;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: (dataList.length / elementsPerRow).ceil(),
-        itemBuilder: (context, rowIndex){
-          int startIndex = rowIndex * elementsPerRow;
-          int endIndex = (rowIndex + 1) * elementsPerRow;
-          endIndex = endIndex > dataList.length ? dataList.length : endIndex;
-          List<String> rowElements = dataList.sublist(startIndex, endIndex);
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: rowElements.map((element) {
-              return Container(
-                padding: EdgeInsets.all(2.0),
-                child: Text(
-                  '#' + element,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 14),
-                ),
-              );
-            }).toList(),
-          );
-        }
-    );
-  }
-}
-
