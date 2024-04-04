@@ -270,7 +270,9 @@ class _kewordpageState extends State<kewordpage> {
                 },
                 child: Container(
                   margin: EdgeInsets.all(5),
-                  color: context.read<state.Store>().selectable_kewords_colors[index],
+                  color: (!context.read<state.Store>().containsAnyKeyword(index))
+                    ? context.watch<state.Store>().selectable_kewords_colors[index]
+                    : context.watch<state.Store>().selectable_kewords_colors[index].withOpacity(1.0),
                   alignment: Alignment.center,
                   child: Text(
                     context.read<state.Store>().selectable_kewords[index],

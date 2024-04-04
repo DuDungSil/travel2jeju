@@ -61,7 +61,7 @@ class Store extends ChangeNotifier {
   {
     for(int i = 0; i < length; i++)
     {
-      selectable_kewords_colors.add(Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(0.2));
+      selectable_kewords_colors.add(Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(0.1));
     }
   }
 
