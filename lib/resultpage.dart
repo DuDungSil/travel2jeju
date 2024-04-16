@@ -38,7 +38,33 @@ class _resultpageState extends State<resultpage> {
                 padding: EdgeInsets.zero,
                 itemCount: context.read<state.Store>().result.length,
                 itemBuilder: (context, index){
-                    return Container(
+                  return GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            alignment: Alignment.center,
+                            title: Text('🏝️ 추천 여행지 🏝️',
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontFamily: 'EF_jejudoldam',
+                              ),
+                            ),
+                            content: Text(context.read<state.Store>().result[index]['spot']),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(); // 다이얼로그 닫기
+                                },
+                                child: Text('확인'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: Container(
                       height: 100,
                       margin: EdgeInsets.only(left: 10, right: 10),
                       padding: EdgeInsets.all(10),
@@ -54,28 +80,21 @@ class _resultpageState extends State<resultpage> {
                         borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
                       ),
                       child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Text("${context.read<state.Store>().result[index]['partner']}와 ", style: TextStyle(fontSize: 15,color: Colors.black ,fontFamily: 'EF_jejudoldam',),),
-                                Text("${context.read<state.Store>().result[index]['period']}일간", style: TextStyle(fontSize: 15,color: Colors.black ,fontFamily: 'EF_jejudoldam',),),
-                              ],
-                            ),
-                            Divider(),
-                            SingleChildScrollView(
-                              scrollDirection: Axis.horizontal, // 수평 스크롤을 가능하게 합니다.
-                              child: Row(
-                                children: <Widget>[
-                                  Text("${context.read<state.Store>().result[index]['keyword']}", style: TextStyle(fontSize: 20,color: Colors.deepPurple ,fontFamily: 'EF_jejudoldam',),),
-
-                                ],
-                              ),
-                            )
-                          ],
+                        children: [
+                          Row(
+                            children: [
+                              Text("${context.read<state.Store>().result[index]['partner']}의 ", style: TextStyle(fontSize: 15,color: Colors.deepPurple ,fontFamily: 'EF_jejudoldam',),),
+                              Text("${context.read<state.Store>().result[index]['period']}일 여행", style: TextStyle(fontSize: 15,color: Colors.deepPurple ,fontFamily: 'EF_jejudoldam',),),
+                            ],
+                          ),
+                          Divider(),
+                          Text("${context.read<state.Store>().result[index]['spot']}", style: TextStyle(fontSize: 20,fontFamily: 'EF_jejudoldam',), overflow: TextOverflow.ellipsis),
+                        ],
                       ),
-                    );
-                  }
-                ),
+                    ),
+                  );
+                }
+            ),
           ),
         ],
       ),
