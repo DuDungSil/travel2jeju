@@ -46,9 +46,17 @@ class _MyAppState extends State<MyApp> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(top: 65),
-                      child: Text("제주 여행", style : TextStyle(fontSize: 65, fontFamily: 'EF_jejudoldam')),
+                      child: Column(
+                        children: [
+                          Text("파트너 유형 별", style : TextStyle(fontSize: 25, fontFamily: 'EF_jejudoldam', color: Colors.deepPurple), maxLines: 1, overflow: TextOverflow.ellipsis,),
+                          Text("제주 여행지", style : TextStyle(fontSize: 55, fontFamily: 'EF_jejudoldam'), maxLines: 1, overflow: TextOverflow.ellipsis,),
+                        ],
+                      ),
                     ),
-                    Text("화면을 터치하세요", style: TextStyle(fontSize: 15, color: Colors.white),)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      child: Text("화면을 터치하세요", style: TextStyle(fontSize: 15, color: Colors.white), maxLines: 1, overflow: TextOverflow.ellipsis,),
+                    )
                   ]
               )
           ),
