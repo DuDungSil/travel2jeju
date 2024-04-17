@@ -89,6 +89,10 @@ class Store extends ChangeNotifier {
       var response = await http.get(url);
       var data = utf8.decode(response.bodyBytes);
       dev.log(data);
+<<<<<<< Updated upstream
+=======
+      result = jsonDecode(data);
+>>>>>>> Stashed changes
     } catch (e, stackTrace) {
       print('Caught error: $e');
       print('Stack trace: $stackTrace');
