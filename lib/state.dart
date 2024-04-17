@@ -17,6 +17,14 @@ class Store extends ChangeNotifier {
 
   var result = [];
 
+  reset() {
+    co_type = '';
+    travel_period = 0;
+    keword_list = [];
+    selectable_kewords = [];
+    selectable_kewords_colors = [];
+  }
+
   changeCo_type(String type) {
     co_type = type;
     notifyListeners();
@@ -61,17 +69,13 @@ class Store extends ChangeNotifier {
   {
     for(int i = 0; i < length; i++)
     {
-      selectable_kewords_colors.add(Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(0.1));
+      selectable_kewords_colors.add(Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(0.2));
     }
   }
 
   bool validateRequiredParameters()
   {
     if(co_type == '')
-    {
-      return false;
-    }
-    if(travel_period == 0)
     {
       return false;
     }
@@ -89,6 +93,8 @@ class Store extends ChangeNotifier {
       var response = await http.get(url);
       var data = utf8.decode(response.bodyBytes);
       dev.log(data);
+      result = jsonDecode(data);
+      notifyListeners();
     } catch (e, stackTrace) {
       print('Caught error: $e');
       print('Stack trace: $stackTrace');
